@@ -1174,6 +1174,118 @@ void GUIDEMO_Wait(int TimeWait) {
 // My stuff
 //===================================================================================
 
+/////////////////////////////////////////////////////////////////////
+#define CONFIG_WF_FIFO_SIZE    (10)
+#define ARR_CNT(x)    (sizeof(x) / sizeof(x[0]))  /* array count */
+
+typedef short wf_t;
+typedef enum {
+	WF_OK = 0,
+	WF_ERR_PA,		// parameter error
+	WF_ERR_NM,		// no memory
+} wf_res_t;
+
+struct NODE {
+	wf_t fifo[CONFIG_WF_FIFO_SIZE];
+	unsigned int head;
+	unsigned int end;
+};
+
+/**
+ * write data into fifo.
+ * @param node: the node to operate.
+ * @param data: the write data.
+ */
+void fifo_in(struct NODE *node, wf_t data)
+{
+	node->fifo[node->head] = data;
+
+	if(++node->head >= ARR_CNT(node->fifo))
+	{
+		node->head = 0;
+	}
+	if(node->head == node->end)
+	{
+		if(++node->end >= ARR_CNT(node->fifo))
+		{
+			node->end = 0;
+		}
+	}
+}
+
+/**
+ * just read fifo, don't drain it.
+ * @param node: the node to operate.
+ * @param read: the memory to store the read out data.
+ * @param cnt: how many units to read.
+ * @return: the result of the read operation.
+ */
+wf_res_t fifo_read(struct NODE *node, wf_t *read, int cnt)
+{
+	unsigned int _end = node->end;
+	int i = 0;
+
+	if(!node || !read || cnt <= 0)
+	{
+		return WF_ERR_PA;
+	}
+
+	if(node->head == node->end)
+	{
+		return WF_ERR_NM;
+	}
+
+	while(_end != node->head)
+	{
+		read[i] = node->fifo[_end];
+		if(++i >= cnt)
+		{
+			break;
+		}
+		if(++_end >= ARR_CNT(node->fifo))
+		{
+			_end = 0;
+		}
+	}
+
+	return WF_OK;
+}
+
+/**
+ * reset a fifo.
+ * @param node: the node to operate.
+ */
+void fifo_reset(struct NODE *node)
+{
+	memset(node, 0, sizeof(*node));
+}
+
+/**
+ * get fifo capacity.
+ * @param node: the node to operate.
+ * @return: how many units the fifo contains.
+ */
+int fifo_cap(struct NODE *node)
+{
+	unsigned int cap = 0;
+	unsigned int _end = node->end;
+
+	while(_end != node->head)
+	{
+		cap++;
+		if(++_end >= ARR_CNT(node->fifo))
+		{
+			_end = 0;
+		}
+	}
+	return cap;
+}
+
+struct NODE node;
+/////////////////////////////////////////////////////////////////////
+
+
+
 /*********************************************************************
 *
 *       Defines
@@ -1253,6 +1365,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   WM_HWIN hItem;
   int NCode;
   int Id;
+  double val;
   // USER END
 
   switch (pMsg->MsgId) {
@@ -1273,10 +1386,39 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     GRAPH_AttachScale(hItem,hScaleH);
     pdataGRP =GRAPH_DATA_YT_Create(GUI_GREEN, 500, 0, 0);
     GRAPH_AttachData(hItem,pdataGRP);
+
+    srand((unsigned)time(NULL));    // prepare the randon seed
+    fifo_reset(&node);
     break;
 
   case WM_TIMER:
-    GRAPH_DATA_YT_AddValue(pdataGRP, 50 * sin(grh_value * 3.1415926 / 180) + y_tran);
+    y_tran = rand() % 41 + 65;
+	val = 50 * sin(grh_value * 3.1415926 / 180) + y_tran;
+
+#if 1
+	// filter
+	{
+		int i, cnt;
+		wf_t buf[CONFIG_WF_FIFO_SIZE] = {0};
+		wf_t ave;
+
+        fifo_in(&node, val);
+        if((cnt = fifo_cap(&node)) == CONFIG_WF_FIFO_SIZE - 1)
+        {
+        	fifo_read(&node, buf, cnt);
+        	ave = 0;
+        	for(i = 0; i < cnt; i++)
+        	{
+        		ave += buf[i];
+        	}
+        	ave = ave / cnt;
+        	GRAPH_DATA_YT_AddValue(pdataGRP, (I16)ave);
+        }
+	}
+#else
+	GRAPH_DATA_YT_AddValue(pdataGRP, val);
+#endif
+
     grh_value += 5;
     if(grh_value > 360)
     {
