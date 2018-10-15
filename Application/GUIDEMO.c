@@ -27,6 +27,7 @@ Purpose     : Several GUIDEMO routines
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "fifo.h"
 
 //
 // Recommended memory to run the sample with adequate performance
@@ -401,7 +402,7 @@ static void _IntroduceDemo(const char * pTitle, const char * pDescription) {
     WM_HideWindow(_hDialogInfo);
     WM_ShowWindow(_hDialogControl);
   #endif
-  GUI_Exec();      
+  GUI_Exec();
   GUIDEMO_DrawBk();
   GUI_SetColor(GUI_WHITE);
   //
@@ -972,7 +973,7 @@ void GUIDEMO_DispTitle(char * pTitle) {
   GUI_SetTextMode(GUI_TM_TRANS);
   GUI_DispStringInRect(pTitle, &RectTitle, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
-                  
+
 /*********************************************************************
 *
 *       GUIDEMO_DispHint
@@ -998,7 +999,7 @@ void GUIDEMO_DispHint(char * pHint) {
   GUI_SetTextMode(GUI_TM_TRANS);
   GUI_DispStringInRect(pHint, &RectHint, GUI_TA_HCENTER | GUI_TA_VCENTER);
 }
-                  
+
 /*********************************************************************
 *
 *       GUIDEMO_DrawBk
@@ -1046,12 +1047,12 @@ void GUIDEMO_Main(void) {
   #endif
 
   MyApp();
-  
+
   //
   // Check if recommended memory for the sample is available
   //
   if (GUI_ALLOC_GetNumFreeBytes() < RECOMMENDED_MEMORY) {
-    GUI_ErrorOut("Not enough memory available."); 
+    GUI_ErrorOut("Not enough memory available.");
     return;
   }
 
@@ -1174,115 +1175,8 @@ void GUIDEMO_Wait(int TimeWait) {
 // My stuff
 //===================================================================================
 
-/////////////////////////////////////////////////////////////////////
-#define CONFIG_WF_FIFO_SIZE    (10)
-#define ARR_CNT(x)    (sizeof(x) / sizeof(x[0]))  /* array count */
-
-typedef short wf_t;
-typedef enum {
-	WF_OK = 0,
-	WF_ERR_PA,		// parameter error
-	WF_ERR_NM,		// no memory
-} wf_res_t;
-
-struct NODE {
-	wf_t fifo[CONFIG_WF_FIFO_SIZE];
-	unsigned int head;
-	unsigned int end;
-};
-
-/**
- * write data into fifo.
- * @param node: the node to operate.
- * @param data: the write data.
- */
-void fifo_in(struct NODE *node, wf_t data)
-{
-	node->fifo[node->head] = data;
-
-	if(++node->head >= ARR_CNT(node->fifo))
-	{
-		node->head = 0;
-	}
-	if(node->head == node->end)
-	{
-		if(++node->end >= ARR_CNT(node->fifo))
-		{
-			node->end = 0;
-		}
-	}
-}
-
-/**
- * just read fifo, don't drain it.
- * @param node: the node to operate.
- * @param read: the memory to store the read out data.
- * @param cnt: how many units to read.
- * @return: the result of the read operation.
- */
-wf_res_t fifo_read(struct NODE *node, wf_t *read, int cnt)
-{
-	unsigned int _end = node->end;
-	int i = 0;
-
-	if(!node || !read || cnt <= 0)
-	{
-		return WF_ERR_PA;
-	}
-
-	if(node->head == node->end)
-	{
-		return WF_ERR_NM;
-	}
-
-	while(_end != node->head)
-	{
-		read[i] = node->fifo[_end];
-		if(++i >= cnt)
-		{
-			break;
-		}
-		if(++_end >= ARR_CNT(node->fifo))
-		{
-			_end = 0;
-		}
-	}
-
-	return WF_OK;
-}
-
-/**
- * reset a fifo.
- * @param node: the node to operate.
- */
-void fifo_reset(struct NODE *node)
-{
-	memset(node, 0, sizeof(*node));
-}
-
-/**
- * get fifo capacity.
- * @param node: the node to operate.
- * @return: how many units the fifo contains.
- */
-int fifo_cap(struct NODE *node)
-{
-	unsigned int cap = 0;
-	unsigned int _end = node->end;
-
-	while(_end != node->head)
-	{
-		cap++;
-		if(++_end >= ARR_CNT(node->fifo))
-		{
-			_end = 0;
-		}
-	}
-	return cap;
-}
-
+fdat_t fifo[16];    // T / 4
 struct NODE node;
-/////////////////////////////////////////////////////////////////////
 
 
 
@@ -1316,10 +1210,10 @@ struct NODE node;
 *       _aDialogCreate
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
-  { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 320, 240, 0, 0x0, 0 },
-  { GRAPH_CreateIndirect, "Graph", ID_GRAPH_0, 6, 4, 309, 193, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "start", ID_BUTTON_0, 18, 207, 80, 20, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "stop", ID_BUTTON_1, 117, 207, 80, 20, 0, 0x0, 0 },
+  { WINDOW_CreateIndirect, "Window", ID_WINDOW_0, 0, 0, 860, 600, 0, 0x0, 0 },
+  { GRAPH_CreateIndirect, "Graph", ID_GRAPH_0, 6, 4, 850, 550, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "noise", ID_BUTTON_0, 18, 565, 80, 20, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "stop", ID_BUTTON_1, 117, 565, 80, 20, 0, 0x0, 0 },
   // USER START (Optionally insert additional widgets)
   // USER END
 };
@@ -1356,11 +1250,13 @@ static void _UserDraw(WM_HWIN hWin, int Stage) {
 */
 static void _cbDialog(WM_MESSAGE * pMsg) {
   // USER START (Optionally insert additional variables)
+  static int ta_flag = 1;    // timer alive flag
+  static int noise_flag = 1;
   GRAPH_SCALE_Handle hScaleV;
   GRAPH_SCALE_Handle hScaleH;
-  static GRAPH_DATA_Handle pdataGRP;
+  static GRAPH_DATA_Handle pdataGRP, pdataGRP2, pdataGRP3;
   static double grh_value;    // graph data
-  static double y_tran = 75;    // y translation
+  static double y_tran;    // y translation
 
   WM_HWIN hItem;
   int NCode;
@@ -1381,50 +1277,73 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     hScaleV =GRAPH_SCALE_Create(20, GUI_TA_RIGHT, GRAPH_SCALE_CF_VERTICAL, 25);
     GRAPH_SCALE_SetTextColor(hScaleV,GUI_RED);
     GRAPH_AttachScale(hItem,hScaleV);
-    hScaleH =GRAPH_SCALE_Create(180, GUI_TA_HCENTER, GRAPH_SCALE_CF_HORIZONTAL, 50);
+    hScaleH =GRAPH_SCALE_Create(535, GUI_TA_HCENTER, GRAPH_SCALE_CF_HORIZONTAL, 50);
     GRAPH_SCALE_SetTextColor(hScaleH,GUI_DARKGREEN);
     GRAPH_AttachScale(hItem,hScaleH);
-    pdataGRP =GRAPH_DATA_YT_Create(GUI_GREEN, 500, 0, 0);
+    pdataGRP =GRAPH_DATA_YT_Create(GUI_WHITE, 900, 0, 0);
     GRAPH_AttachData(hItem,pdataGRP);
+    pdataGRP2 =GRAPH_DATA_YT_Create(GUI_RED, 900, 0, 0);
+    GRAPH_AttachData(hItem,pdataGRP2);
+    pdataGRP3 =GRAPH_DATA_YT_Create(GUI_GREEN, 900, 0, 0);
+    GRAPH_AttachData(hItem,pdataGRP3);
 
     srand((unsigned)time(NULL));    // prepare the randon seed
-    fifo_reset(&node);
+    fifo_init(&node, fifo, ARR_CNT(fifo));
     break;
 
   case WM_TIMER:
-    y_tran = rand() % 41 + 65;
-	val = 50 * sin(grh_value * 3.1415926 / 180) + y_tran;
+    if(!ta_flag)
+    {
+        WM_RestartTimer(pMsg->Data.v, 1);
+        break;
+    }
 
-#if 1
+    y_tran = 425;
+	val = 50 * sin(grh_value * 3.1415926 / 180) + y_tran;
+	GRAPH_DATA_YT_AddValue(pdataGRP, (I16)val);
+
+	if(noise_flag)
+    {
+        y_tran = rand() % 41 + 275;
+    }
+    else
+    {
+        y_tran = 275;
+    }
+	val = 50 * sin(grh_value * 3.1415926 / 180) + y_tran;
+	GRAPH_DATA_YT_AddValue(pdataGRP2, (I16)val);
+
 	// filter
 	{
-		int i, cnt;
-		wf_t buf[CONFIG_WF_FIFO_SIZE] = {0};
-		wf_t ave;
+		unsigned int deep, deeptotal, rc;
+		fdat_t units[ARR_CNT(fifo)];
 
-        fifo_in(&node, val);
-        if((cnt = fifo_cap(&node)) == CONFIG_WF_FIFO_SIZE - 1)
+        fifo_in(&node, &val);
+        fifo_deep(&node, &deep);
+        fifo_deeptotal(&node, &deeptotal);
+        if(deep == deeptotal)
         {
-        	fifo_read(&node, buf, cnt);
-        	ave = 0;
-        	for(i = 0; i < cnt; i++)
+        	fifo_peep(&node, units, deeptotal, &rc);
+        	double ave = 0;
+        	for(int i = 0; i < rc; i++)
         	{
-        		ave += buf[i];
+        		ave += units[i];
         	}
-        	ave = ave / cnt;
-        	GRAPH_DATA_YT_AddValue(pdataGRP, (I16)ave);
+        	ave = ave / rc * 1.0 - 200;
+        	GRAPH_DATA_YT_AddValue(pdataGRP3, (I16)ave);
+        }
+        else
+        {
+            GRAPH_DATA_YT_AddValue(pdataGRP3, 100);
         }
 	}
-#else
-	GRAPH_DATA_YT_AddValue(pdataGRP, val);
-#endif
 
     grh_value += 5;
     if(grh_value > 360)
     {
     	grh_value = 0;
     }
-    WM_RestartTimer(pMsg->Data.v, 10);
+    WM_RestartTimer(pMsg->Data.v, 1);
     break;
 
   case WM_NOTIFY_PARENT:
@@ -1435,7 +1354,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
         // USER START (Optionally insert code for reacting on notification message)
-        y_tran += 5;
+        noise_flag = !noise_flag;
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
@@ -1450,11 +1369,11 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
         // USER START (Optionally insert code for reacting on notification message)
-        y_tran -= 5;
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
         // USER START (Optionally insert code for reacting on notification message)
+        ta_flag = !ta_flag;
         // USER END
         break;
       // USER START (Optionally insert additional code for further notification handling)
@@ -1513,7 +1432,7 @@ void MyApp(void)
 
 	while(1)
 	{
-		GUI_Delay(1);
+		GUI_Exec();
 	}
 }
 

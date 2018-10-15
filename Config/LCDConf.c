@@ -31,8 +31,8 @@ Purpose     : Display controller configuration (single layer)
 //
 // Physical display size
 //
-#define XSIZE_PHYS  320
-#define YSIZE_PHYS  240
+#define XSIZE_PHYS  860
+#define YSIZE_PHYS  600
 #define VYSIZE_PHYS (YSIZE_PHYS << 1)
 
 //
@@ -87,7 +87,7 @@ Purpose     : Display controller configuration (single layer)
 * Purpose:
 *   Called during the initialization process in order to set up the
 *   display driver configuration.
-*   
+*
 */
 void LCD_X_Config(void) {
   //
@@ -116,7 +116,7 @@ void LCD_X_Config(void) {
 *   This function is called by the display driver for several purposes.
 *   To support the according task the routine needs to be adapted to
 *   the display controller. Please note that the commands marked with
-*   'optional' are not cogently required and should only be adapted if 
+*   'optional' are not cogently required and should only be adapted if
 *   the display controller supports these features.
 *
 * Parameter:
