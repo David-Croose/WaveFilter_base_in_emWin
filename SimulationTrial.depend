@@ -1,0 +1,353 @@
+# depslib dependency file v1.0
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\fifo.c
+	"fifo.h"
+	<string.h>
+	<stdio.h>
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\application\fifo.h
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo.c
+	"GUIDEMO.h"
+	"DIALOG.h"
+	<string.h>
+	<time.h>
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	"fifo.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\application\guidemo.h
+	"GUI.h"
+	"WM.h"
+	"CHECKBOX.h"
+	"FRAMEWIN.h"
+	"PROGBAR.h"
+	"TEXT.h"
+	"BUTTON.h"
+	"SLIDER.h"
+	"HEADER.h"
+	"GRAPH.h"
+	"ICONVIEW.h"
+	"LISTVIEW.h"
+	"TREEVIEW.h"
+	<stdlib.h>
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"GUI_Version.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_confdefaults.h
+	"GUIConf.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\config\guiconf.h
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_type.h
+	"LCD.h"
+	"GUIConf.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\lcd.h
+	"GUI_ConfDefaults.h"
+	"Global.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\global.h
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_version.h
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\wm.h
+	"GUI_ConfDefaults.h"
+	"GUI_Type.h"
+	"WM_GUI.h"
+	"GUI.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\wm_gui.h
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\checkbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\dialog_intern.h
+	"WM.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\widget.h
+	"WM_Intern.h"
+	"SCROLLBAR.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\wm_intern.h
+	"WM.h"
+	"GUI_Private.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_private.h
+	"GUI.h"
+	"LCD_Protected.h"
+	"GUI_Debug.h"
+	"WM_GUI.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\lcd_protected.h
+	"LCD.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_debug.h
+	<stddef.h>
+	"GUI.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\scrollbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\framewin.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\progbar.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\text.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\button.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\slider.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\header.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\graph.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\iconview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\listview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"ICONVIEW.h"
+	"HEADER.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\treeview.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\dialog.h
+	"WM.h"
+	"BUTTON.h"
+	"CALENDAR.h"
+	"CHECKBOX.h"
+	"CHOOSECOLOR.h"
+	"CHOOSEFILE.h"
+	"DROPDOWN.h"
+	"EDIT.h"
+	"FRAMEWIN.h"
+	"GRAPH.h"
+	"HEADER.h"
+	"ICONVIEW.h"
+	"IMAGE.h"
+	"LISTBOX.h"
+	"LISTVIEW.h"
+	"LISTWHEEL.h"
+	"MENU.h"
+	"MULTIEDIT.h"
+	"MULTIPAGE.h"
+	"PROGBAR.h"
+	"RADIO.h"
+	"SCROLLBAR.h"
+	"SLIDER.h"
+	"SPINBOX.h"
+	"TEXT.h"
+	"TREEVIEW.h"
+	"KNOB.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\calendar.h
+	"WM.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\choosecolor.h
+	"WM.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\choosefile.h
+	"WM.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\dropdown.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"LISTBOX.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\listbox.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\edit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\image.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\listwheel.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\menu.h
+	"WM.h"
+	"WIDGET.h"
+	"DIALOG_Intern.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\multiedit.h
+	"WM.h"
+	"DIALOG_Intern.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\multipage.h
+	"WM.h"
+	"DIALOG.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\radio.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\spinbox.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+	"EDIT.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\knob.h
+	"WM.h"
+	"DIALOG_Intern.h"
+	"WIDGET.h"
+	"GUI_Debug.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_antialiasedtext.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_automotive.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_bargraph.c
+	"GUI.h"
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_bitmap.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_colorbar.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_conf.c
+	"GUI.h"
+	"GUIDEMO.h"
+	"GUI_VNC.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_vnc.h
+	"GUI_Private.h"
+	"GUI_Type.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_cursor.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_fading.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_graph.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_iconview.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_imageflow.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_intro.c
+	<string.h>
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_listview.c
+	"GUIDEMO.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_radialmenu.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_resource.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_skinning.c
+	"GUIDEMO.h"
+	<string.h>
+	"DIALOG.h"
+	"MESSAGEBOX.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\messagebox.h
+	"WM.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_speed.c
+	"GUIDEMO.h"
+	<stdlib.h>
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_speedometer.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_start.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_transparentdialog.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_treeview.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_vscreen.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_washingmachine.c
+	"GUIDEMO.h"
+	<math.h>
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\application\guidemo_zoomandrotate.c
+	"GUIDEMO.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\config\guiconf.c
+	"GUI.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\config\lcdconf.c
+	"GUI.h"
+
+1552464622 source:c:\users\ldc\desktop\emwin-pc-study\config\simconf.c
+	"LCD_SIM.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\lcd_sim.h
+	"LCD.h"
+
+1552464623 source:c:\users\ldc\desktop\emwin-pc-study\simulation\winmain.c
+	<windows.h>
+	"GUI_SIM_Win32.h"
+
+1552464622 c:\users\ldc\desktop\emwin-pc-study\gui\include\gui_sim_win32.h
+	<windows.h>
+
